@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
+import path from "node:path";
 import { Readable } from "node:stream";
 import test from "node:test";
 import sharp from "sharp";
@@ -50,7 +51,7 @@ async function install(plugin, root) {
 }
 
 test("ordinary users are rejected before the wardrobe AI endpoint reaches a model", async () => {
-  const root = await mkdtemp(`${tmpdir()}\\wardrobe-ai-gate-`);
+  const root = await mkdtemp(path.join(tmpdir(), "wardrobe-ai-gate-"));
   let visionCalls = 0;
   try {
     const handler = await install(wardrobeImportApi({
@@ -71,7 +72,7 @@ test("ordinary users are rejected before the wardrobe AI endpoint reaches a mode
 });
 
 test("AI import rejects another user's Storage key before reading the object", async () => {
-  const root = await mkdtemp(`${tmpdir()}\\wardrobe-ai-key-owner-`);
+  const root = await mkdtemp(path.join(tmpdir(), "wardrobe-ai-key-owner-"));
   const otherUser = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
   let storageReads = 0;
   try {
@@ -99,7 +100,7 @@ test("AI import rejects another user's Storage key before reading the object", a
 });
 
 test("new AI import requests reject legacy base64 image fields", async () => {
-  const root = await mkdtemp(`${tmpdir()}\\wardrobe-ai-no-base64-`);
+  const root = await mkdtemp(path.join(tmpdir(), "wardrobe-ai-no-base64-"));
   try {
     const handler = await install(wardrobeImportApi({
       verify: async () => ({ id: USER }),
@@ -118,7 +119,7 @@ test("new AI import requests reject legacy base64 image fields", async () => {
 });
 
 test("AI import exposes the exact failing phase when vision inference fails before job persistence", async () => {
-  const root = await mkdtemp(`${tmpdir()}\\wardrobe-ai-phase-diagnostics-`);
+  const root = await mkdtemp(path.join(tmpdir(), "wardrobe-ai-phase-diagnostics-"));
   try {
     const handler = await install(wardrobeImportApi({
       verify: async () => ({ id: USER }),
@@ -158,7 +159,7 @@ test("AI import exposes the exact failing phase when vision inference fails befo
 });
 
 test("ordinary users can save an original wardrobe image with empty metadata", async () => {
-  const root = await mkdtemp(`${tmpdir()}\\wardrobe-manual-save-`);
+  const root = await mkdtemp(path.join(tmpdir(), "wardrobe-manual-save-"));
   try {
     const cloud = cloudFor({ invite_activated: false });
     let uploaded = false;
@@ -191,7 +192,7 @@ test("ordinary users can save an original wardrobe image with empty metadata", a
 });
 
 test("manual wardrobe endpoint preserves optional metadata without invoking AI", async () => {
-  const root = await mkdtemp(`${tmpdir()}\\wardrobe-manual-metadata-`);
+  const root = await mkdtemp(path.join(tmpdir(), "wardrobe-manual-metadata-"));
   try {
     const cloud = cloudFor({ invite_activated: false });
     let uploadedRecord;
@@ -223,7 +224,7 @@ test("manual wardrobe endpoint preserves optional metadata without invoking AI",
 });
 
 test("wardrobe metadata edits persist through the authenticated PATCH route", async () => {
-  const root = await mkdtemp(`${tmpdir()}\\wardrobe-manual-patch-`);
+  const root = await mkdtemp(path.join(tmpdir(), "wardrobe-manual-patch-"));
   const id = "import-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
   try {
     const existing = {
@@ -272,7 +273,7 @@ test("wardrobe metadata edits persist through the authenticated PATCH route", as
 });
 
 test("AI review rejects stale stages but treats an already successful decision as idempotent", async () => {
-  const root = await mkdtemp(`${tmpdir()}\\wardrobe-review-idempotency-`);
+  const root = await mkdtemp(path.join(tmpdir(), "wardrobe-review-idempotency-"));
   const id = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
   let stored = {
     id,
@@ -323,7 +324,7 @@ test("AI review rejects stale stages but treats an already successful decision a
 });
 
 test("AI import falls back to a full-image crop and waits until garment review is persisted", async () => {
-  const root = await mkdtemp(`${tmpdir()}\\wardrobe-ai-crop-pipeline-`);
+  const root = await mkdtemp(path.join(tmpdir(), "wardrobe-ai-crop-pipeline-"));
   const jobs = new Map();
   const assets = new Map();
   let imageCalls = 0;
@@ -369,7 +370,7 @@ test("AI import falls back to a full-image crop and waits until garment review i
 });
 
 test("ordinary users are rejected before outfit generation starts", async () => {
-  const root = await mkdtemp(`${tmpdir()}\\wardrobe-outfit-gate-`);
+  const root = await mkdtemp(path.join(tmpdir(), "wardrobe-outfit-gate-"));
   let imageCalls = 0;
   try {
     const handler = await install(wardrobeOutfitApi({
