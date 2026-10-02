@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+data/
+backups/
+
+# Additional protections for local data and credentials.
+data-*/
+.meoo/
+*.zip
+*.7z
+*.pem
+*.key

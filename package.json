@@ -1,0 +1,28 @@
+{
+  "name": "wardrobe",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A local-first AI wardrobe gallery with selectable model providers.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "node --test \"tests/**/*.test.mjs\"",
+    "preview": "vite preview",
+    "check": "npm test && npm run build",
+    "start": "node scripts/start-local.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/instrument-sans": "^5.2.8",
+    "@phosphor-icons/react": "^2.1.10",
+    "@supabase/supabase-js": "^2.112.3",
+    "@unpic/react": "^1.0.2",
+    "@vitejs/plugin-react": "5.0.4",
+    "ipx": "^3.1.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "sharp": "^0.34.5",
+    "vite": "6.4.3"
+  }
+}
